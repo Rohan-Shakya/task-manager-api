@@ -3,6 +3,11 @@ const router = new express.Router();
 const Task = require('../models/task');
 const auth = require('../middleware/auth');
 
+/*
+    @route  POST /tasks
+    @desc   Create a new user task
+    @access Private
+*/
 router.post('/tasks', auth, async (req, res) => {
   const task = new Task({
     ...req.body,
@@ -17,6 +22,11 @@ router.post('/tasks', auth, async (req, res) => {
   }
 });
 
+/*
+    @route  GET /tasks
+    @desc   Get all user tasks
+    @access Private
+*/
 router.get('/tasks', auth, async (req, res) => {
   const match = {};
   const sort = {};
@@ -48,6 +58,11 @@ router.get('/tasks', auth, async (req, res) => {
   }
 });
 
+/*
+    @route  GET /tasks/:id
+    @desc   Get a task details
+    @access Private
+*/
 router.get('/tasks/:id', auth, async (req, res) => {
   const _id = req.params.id;
 
@@ -63,6 +78,11 @@ router.get('/tasks/:id', auth, async (req, res) => {
   }
 });
 
+/*
+    @route  PATCH /tasks/:id
+    @desc   Update a user's task details
+    @access Private
+*/
 router.patch('/tasks/:id', auth, async (req, res) => {
   const updates = Object.keys(req.body);
   const allowedUpdates = ['description', 'completed'];
@@ -92,6 +112,11 @@ router.patch('/tasks/:id', auth, async (req, res) => {
   }
 });
 
+/*
+    @route  DELETE /tasks/:id
+    @desc   Delete a user's task
+    @access Private
+*/
 router.delete('/tasks/:id', auth, async (req, res) => {
   try {
     const task = await Task.findOneAndDelete({

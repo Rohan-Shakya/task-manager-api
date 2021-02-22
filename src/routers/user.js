@@ -5,6 +5,11 @@ const auth = require('../middleware/auth');
 const multer = require('multer');
 const sharp = require('sharp');
 
+/*
+    @route  POST /users
+    @desc   Create a new user
+    @access Public
+*/
 router.post('/users', async (req, res) => {
   const user = new User(req.body);
   try {
@@ -17,6 +22,11 @@ router.post('/users', async (req, res) => {
   }
 });
 
+/*
+    @route  POST /users/login
+    @desc   Login for authorization
+    @access Public
+*/
 router.post('/users/login', async (req, res) => {
   try {
     const user = await User.findByCredentials(
@@ -32,6 +42,11 @@ router.post('/users/login', async (req, res) => {
   }
 });
 
+/*
+    @route  POST /users/logout
+    @desc   User Logout
+    @access Private
+*/
 router.post('/users/logout', auth, async (req, res) => {
   try {
     req.user.tokens = req.user.tokens.filter((token) => {
@@ -44,6 +59,11 @@ router.post('/users/logout', auth, async (req, res) => {
   }
 });
 
+/*
+    @route  POST /users/logoutAll
+    @desc   Logout all the user
+    @access Private
+*/
 router.post('/users/logoutAll', auth, async (req, res) => {
   try {
     req.user.tokens = [];
@@ -54,10 +74,20 @@ router.post('/users/logoutAll', auth, async (req, res) => {
   }
 });
 
+/*
+    @route  GET /users/me
+    @desc   Get user details
+    @access Private
+*/
 router.get('/users/me', auth, async (req, res) => {
   res.send(req.user);
 });
 
+/*
+    @route  PATCH /users/me
+    @desc   Update user details
+    @access Private
+*/
 router.patch('/users/me', auth, async (req, res) => {
   const updates = Object.keys(req.body);
   const allowedUpdates = ['name', 'email', 'password', 'age'];
@@ -83,6 +113,11 @@ router.patch('/users/me', auth, async (req, res) => {
   }
 });
 
+/*
+    @route  DELETE /users/me
+    @desc   Delete user
+    @access Private
+*/
 router.delete('/users/me', auth, async (req, res) => {
   try {
     // const user = await User.findByIdAndDelete(req.user._id);
@@ -111,6 +146,11 @@ const upload = multer({
   },
 });
 
+/*
+    @route  POST /users/me/avatar
+    @desc   Post a user profile picture
+    @access Private
+*/
 router.post(
   '/users/me/avatar',
   auth,
@@ -129,12 +169,22 @@ router.post(
   }
 );
 
+/*
+    @route  DELETE /users/me/avatar
+    @desc   Delete user profile picture
+    @access Private
+*/
 router.delete('/users/me/avatar', auth, async (req, res) => {
   req.user.avatar = undefined;
   await req.user.save();
   res.send({ msg: 'image deleted' });
 });
 
+/*
+    @route  GET /users/:id/avatar
+    @desc   Get user profile picture
+    @access Private
+*/
 router.get('/users/:id/avatar', async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
