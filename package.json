@@ -11,8 +11,13 @@
   "author": "Rohan-Shakya",
   "license": "MIT",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "express": "^4.17.1",
-    "mongoose": "^5.11.15"
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.11.15",
+    "multer": "^1.4.2",
+    "sharp": "^0.27.1",
+    "validator": "^13.5.2"
   },
   "devDependencies": {
     "env-cmd": "^10.1.0",
